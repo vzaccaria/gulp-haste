@@ -1,6 +1,6 @@
 {
   "name": "gulp-haste",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Gulp plugin for the Haskell to JS compiler",
   "main": "index.js",
   "scripts": {
