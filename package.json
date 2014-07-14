@@ -18,5 +18,10 @@
   "bugs": {
     "url": "https://github.com/vzaccaria/gulp-haste/issues"
   },
-  "homepage": "https://github.com/vzaccaria/gulp-haste"
+  "homepage": "https://github.com/vzaccaria/gulp-haste",
+  "dependencies": {
+    "shelljs": "^0.3.0",
+    "map-stream": "^0.1.0",
+    "debug": "^1.0.3"
+  }
 }
