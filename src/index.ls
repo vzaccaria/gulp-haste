@@ -15,7 +15,7 @@ get-tmp-file = ->
     return dire
 
 rm-tmp-file = (dir) ->
-    shelljs.rm '-rf', dir 
+    sh.rm '-rf', dir 
 
 
 decode-path = (file) ->
@@ -43,13 +43,13 @@ haste = (options) ->
         new-path = encode-path(dirname, basename, extname)
         debug(JSON.stringify(cp, 0 ,4))
 
-        if not options?.export?
-            imprt = "%%"
+        if options?.export? and options.export 
+            imprt = "%%(); module.exports = Haste;"
         else 
-            imprt = "Haste[#{options.export}]"
+            imprt = "module.exports = %%"
 
         fil = get-tmp-file()
-        cmd = 'hastec --start="module.exports = ' + imprt + ';" ' + file.path + ' --out='+fil 
+        cmd = 'hastec --start="' + imprt + ';" ' + file.path + ' --out='+fil 
 
         debug("invoking hastec compiler")
         debug cmd

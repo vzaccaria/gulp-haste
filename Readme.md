@@ -24,17 +24,20 @@ gulp.src("*.hs")
     .pipe(gulp.dest("build"));
 ```
 
-where `options` is an optional hash. If you omit `options`, the Haskell's function exported is `main`.
+where `options` is an optional hash. If you omit `options`, the Haskell's function exported is just `main`.
 
 # Options
 
 ```javascript
 var options = {
-   export: "name_of_haskell_function";
+   export: true;
 }
 ```
 
-`export` specifies a different function to be exported. This function should be specified in the Haskell program like this:
+`export=true` specifies that the whole set of FFI exported functions should be made available when requiring the module; 
+
+# Example
+The code below FFI exports one function, which will be available by requiring the module:
 
 ```haskell
 import Haste.Foreign
@@ -45,3 +48,11 @@ myFunction _ = return True
 main = do 
     export "name_of_haskell_function" myFunction 
 ```
+
+In order to load this function javascript-side:
+
+```javascript
+myHaskellFunction = require('converted_by_hastec').name_of_haskell_function
+```
+
+

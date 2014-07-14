@@ -16,7 +16,7 @@
     return dire;
   };
   rmTmpFile = function(dir){
-    return shelljs.rm('-rf', dir);
+    return sh.rm('-rf', dir);
   };
   decodePath = function(file){
     var workdir, sourcefile, rpath, extname;
@@ -40,13 +40,13 @@
       extname = ".js";
       newPath = encodePath(dirname, basename, extname);
       debug(JSON.stringify(cp, 0, 4));
-      if ((options != null ? options['export'] : void 8) == null) {
-        imprt = "%%";
+      if ((options != null ? options['export'] : void 8) != null && options['export']) {
+        imprt = "%%(); module.exports = Haste;";
       } else {
-        imprt = "Haste[" + options['export'] + "]";
+        imprt = "module.exports = %%";
       }
       fil = getTmpFile();
-      cmd = 'hastec --start="module.exports = ' + imprt + ';" ' + file.path + ' --out=' + fil;
+      cmd = 'hastec --start="' + imprt + ';" ' + file.path + ' --out=' + fil;
       debug("invoking hastec compiler");
       debug(cmd);
       return sh.exec(cmd, {
@@ -58,6 +58,7 @@
         } else {
           debug("Reading " + fil);
           output = sh.cat(fil);
+          rmTmpFile(fil);
           file.path = gutil.replaceExtension(file.path, '.js');
           file.contents = new Buffer(output);
           return cb(false, file);
