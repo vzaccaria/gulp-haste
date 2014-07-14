@@ -9,7 +9,9 @@ This gulp plugin allows to use the Haste compiler to produce Requirejs modules f
 
 # Installation
 
-* npm install gulp-haste
+```
+npm install gulp-haste
+```
 
 # Configuration
 
