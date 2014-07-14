@@ -1,0 +1,22 @@
+{
+  "name": "gulp-haste",
+  "version": "0.0.0",
+  "description": "Gulp plugin for the Haskell to JS compiler",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vzaccaria/gulp-haste.git"
+  },
+  "keywords": [
+    "gulp-friendly"
+  ],
+  "author": "Vittorio Zaccaria",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vzaccaria/gulp-haste/issues"
+  },
+  "homepage": "https://github.com/vzaccaria/gulp-haste"
+}
