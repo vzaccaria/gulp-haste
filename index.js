@@ -1,5 +1,5 @@
 (function(){
-  var map, debug, sh, path, os, moment, gutil, otm, cwd, getTmpFile, rmTmpFile, decodePath, encodePath, haste;
+  var map, debug, sh, path, os, moment, gutil, otm, cwd, getTmpFile, rmTmpFile, decodePath, encodePath, haste, join$ = [].join;
   map = require('map-stream');
   debug = require("debug")("gulp-haste");
   sh = require('shelljs');
@@ -35,31 +35,37 @@
   };
   haste = function(options){
     return map(function(file, cb){
-      var cp, ref$, dirname, basename, extname, newPath, imprt, fil, cmd;
+      var cp, ref$, dirname, basename, extname, newPath, imprt, addOpt, fil, cmd;
       cp = (ref$ = decodePath(file), dirname = ref$.dirname, basename = ref$.basename, extname = ref$.extname, ref$);
       extname = ".js";
       newPath = encodePath(dirname, basename, extname);
       debug(JSON.stringify(cp, 0, 4));
       if ((options != null ? options['export'] : void 8) != null && options['export']) {
-        imprt = "%%(); module.exports = Haste;";
+        imprt = "\"hasteMain(); module.exports = Haste;\"";
       } else {
-        imprt = "module.exports = %%";
+        imprt = "\"module.exports = hasteMain\"";
+      }
+      addOpt = [];
+      if ((options != null ? options.withJs : void 8) != null) {
+        addOpt.push("--with-js=" + options.withJs);
       }
       fil = getTmpFile();
-      cmd = 'hastec --start="' + imprt + ';" ' + file.path + ' --out=' + fil;
+      cmd = "cd " + dirname + " && hastec --start=" + imprt + " " + file.path + " --out=" + fil + " " + join$.call(addOpt, ' ');
       debug("invoking hastec compiler");
       debug(cmd);
       return sh.exec(cmd, {
         silent: true
-      }, function(code){
+      }, function(code, out){
         var output;
         if (code !== 0) {
-          return cb(true);
+          debug("Error:");
+          debug(out);
+          return cb(true, out);
         } else {
           debug("Reading " + fil);
           output = sh.cat(fil);
-          rmTmpFile(fil);
           file.path = gutil.replaceExtension(file.path, '.js');
+          debug("output to " + file.path);
           file.contents = new Buffer(output);
           return cb(false, file);
         }

@@ -44,23 +44,31 @@ haste = (options) ->
         debug(JSON.stringify(cp, 0 ,4))
 
         if options?.export? and options.export 
-            imprt = "%%(); module.exports = Haste;"
+            imprt = "\"hasteMain(); module.exports = Haste;\""
         else 
-            imprt = "module.exports = %%"
+            imprt = "\"module.exports = hasteMain\""
+
+        add-opt = []
+
+        if options?.with-js? 
+            add-opt.push("--with-js=#{options.with-js}")
 
         fil = get-tmp-file()
-        cmd = 'hastec --start="' + imprt + ';" ' + file.path + ' --out='+fil 
+
+        cmd = "cd #dirname && hastec --start=#imprt #{file.path} --out=#fil #{add-opt * ' '}"
 
         debug("invoking hastec compiler")
         debug cmd
-        sh.exec cmd, {+silent}, (code) ->
+        sh.exec cmd, {+silent}, (code,out) ->
             if code != 0
-                cb(true)
+                debug("Error:")
+                debug(out)
+                cb(true, out)
             else 
                 debug("Reading #fil")
                 output        = sh.cat(fil)
-                rm-tmp-file fil
                 file.path     = gutil.replaceExtension(file.path, '.js');
+                debug("output to #{file.path}")
                 file.contents = new Buffer(output)
                 cb(false, file)
 
