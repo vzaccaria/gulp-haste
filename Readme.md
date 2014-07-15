@@ -31,10 +31,12 @@ where `options` is an optional hash. If you omit `options`, the Haskell's functi
 ```javascript
 var options = {
    export: true;
+   withJs: "file.js"
 }
 ```
 
-`export=true` specifies that the whole set of FFI exported functions should be made available when requiring the module; 
+* `export=true` specifies that the whole set of FFI exported functions should be made available when requiring the module; 
+* `withJs` includes the specified file in the prologue of the compiled program.
 
 # Example
 The code below FFI exports one function, which will be available by requiring the module:
