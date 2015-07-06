@@ -23,6 +23,7 @@
     "shelljs": "^0.3.0",
     "map-stream": "^0.1.0",
     "debug": "^1.0.3",
-    "gulp-util": "^2.2.20"
+    "gulp-util": "^2.2.20",
+    "moment": "^2.10.3"
   }
 }
